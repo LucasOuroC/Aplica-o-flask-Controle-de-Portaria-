@@ -1,0 +1,92 @@
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/static/img/Mercantefundo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(3px);
+  z-index: -1;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+#placaFiltro {
+  width: 90px;
+}
+
+#titulo {
+  font-size: 40px;
+}
+
+#img {
+  width: 200px;
+  padding: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 20px;
+}
+
+#excel-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#excel-table th,
+#excel-table td {
+  border: 1px solid #000000;
+  padding: 8px;
+  text-align: center;
+}
+
+#excel-table th {
+  background-color: rgb(0, 89, 168);
+  color: white;
+}
+
+#excel-table tbody tr {
+  background-color: #ffffff;
+}
+
+#back {
+  background-color: rgb(0, 89, 168);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  color: white;
+}
+
+#back:hover {
+  background-color: rgb(0, 89, 168);
+}
+
+#imp {
+  background-color: rgb(0, 89, 168);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  position: fixed;
+  bottom: 20px;
+  right: 90px;
+  cursor: pointer;
+  color: white;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="shortcut icon" type="image/jpeg" href="../static/img/Mercante logo.jpg">
+    <link rel="icon" type="image/jpeg" href="../static/img/Mercante logo.jpg">
+    <link rel="stylesheet" href="../static/css/login.css">
+</head>
+
+<body>
+
+    <div>
+        <form action="/login" id="login" method="post">
+            <label for="nome" id="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" required placeholder="Digite o seu nome">
+            <label for="senha" id="senha">Senha:</label>
+            <input type="password" name="senha" id="senha" required placeholder="Digite sua senha">
+            {% set mensagem = get_flashed_messages() %}
+            {% if mensagem %}
+            <div class="alert">
+                <h1>{{ mensagem[0] }}</h1>
+            </div>
+            {% endif %}
+            <button type="submit" id="button">Entrar</button>
+        </form>
+    </div>
+
+</body>
+<script>
+   
+</script>
+</html>

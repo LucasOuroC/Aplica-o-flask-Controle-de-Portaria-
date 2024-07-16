@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>home</title>
+    <link rel="stylesheet" href="/static/css/home.css"/>
+  </head>
+
+  <body>
+    <div>
+      <a href="/logout" id="logout">Logout</a>
+    </div>
+    <div class="container">
+      <h1>Controle Portaria</h1>
+      <form id="relatorio-form" method="POST" action="/home">
+        <p>
+          <label for="data">Data:</label>
+          <input type="date" name="data" required />
+        </p>
+        <p>
+          <label for="horaE">Hora de Entrada:</label>
+          <input type="time" name="horaE" required />
+        </p>
+        <p>
+          <div class="flex-container">
+            <label for="veic">Veículo:</label>
+            <label for="cor">Cor:</label>
+          </div>
+          <div class="input-container">
+            <input type="text" name="veic" required />
+            <input type="text" name="cor" required>
+          </div>
+        </p>
+        <p>
+          <label for="placa">Placa:</label>
+          <input type="text" maxlength="8" oninput="formatPlaca()" id="placa" name="placa" required />
+        </p>
+        <p>
+          <div class="checkbox-container">
+            <label for="vist">Visitante</label> 
+            <input type="radio" name="check" id="visit" value="Visitante" checked>
+          </div>
+          <div class="checkbox-container">
+            <label for="prest">Prestador de Serviço</label>
+            <input type="radio" name="check" id="prest" value="Prestador de Serviço">
+          </div>
+          <input type="text" name="visit" required />
+        </p>
+        <p>
+          <label for="Rg">CPF:</label>
+          <input type="text" name="Rg" maxlength="14" id="Rg" required />
+        </p>
+        <p>
+          <label for="empresa">Empresa:</label>
+          <input type="text" name="empresa" required />
+        </p>
+        <p>
+          <label for="setor">Setor:</label>
+          <input list="setores" name="setor" required />
+        </p>
+
+        <datalist id="setores">
+          <option value="Ti"></option>
+          <option value="Compras"></option>
+          <option value="Contas"></option>
+          <option value="Financeiro"></option>
+          <option value="Recebimento"></option>
+          <option value="Logistica"></option>
+          <option value="Televendas"></option>
+          <option value="Rh"></option>
+        </datalist>
+
+        <p>
+          <label for="obs">Observações:</label>
+          <textarea name="obs" id="obs" maxlength="500" rows="6"
+           placeholder="Digite sua mensagem(500 caracteres)" oninput="characterCount()" ></textarea>
+           <span id="cont">0/500 caracteres</span>
+        </p>
+
+        <button id="salvar" type="submit">Salvar Informações</button>
+      </form>
+
+      <form action="/relatorio" method="GET">
+        <button id="imp" type="submit">Imprimir</button>
+      </form>
+    </div>
+
+    <script>
+      function formatPlaca(){
+        var placa = document.getElementById('placa')
+        placa.value = placa.value.toUpperCase()
+      } 
+
+      function characterCount(){
+        var textarea = document.getElementById('obs')
+        var charCount = document.getElementById('cont')
+        charCount.textContent =  textarea.value.length + '/500 caracteres'
+      }
+
+      function rgMask(event) {
+        let Rg = event.target.value;
+
+        if (Rg !== null) {
+          Rg = Rg.replace(/\D/g, "");
+
+          Rg = Rg.replace(/^(\d{3})(\d)/, "$1.$2");
+          Rg = Rg.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3");
+          Rg = Rg.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+        }
+
+        event.target.value = Rg;
+      }
+
+      document.getElementById("imp").addEventListener("click", function () {
+        window.location.href = "/relatorio";
+      });
+
+      const campoRg = document.getElementById("Rg");
+
+      campoRg.addEventListener("input", rgMask);
+    </script>
+  </body>
+</html>
