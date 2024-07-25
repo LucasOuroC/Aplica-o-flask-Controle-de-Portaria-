@@ -9,7 +9,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'mercante'
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
