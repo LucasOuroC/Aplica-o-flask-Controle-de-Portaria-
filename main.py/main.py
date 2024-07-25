@@ -3,6 +3,10 @@ from functools import wraps
 from datetime import datetime
 import mysql.connector
 from mysql.connector import Error
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'mercante'
@@ -15,11 +19,11 @@ app.config.update(
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
-            host='127.0.0.1',
-            port=3306,
-            database='prod1',
-            user='root',
-            password='Lusc@031020'
+            host= os.getenv("DB_HOST"),
+            port= os.getenv("DB_PORT"),
+            database= os.getenv("DB_NAME"),
+            user= os.getenv("DB_USER"),
+            password= os.getenv("DB_PASSWORD")
         )
         if connection.is_connected():
             print("Conexão ao MySQL estabelecida com sucesso!")
