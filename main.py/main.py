@@ -4,24 +4,29 @@ from datetime import datetime
 import mysql.connector
 from mysql.connector import Error
 
-
 app = Flask(__name__)
 app.secret_key = 'mercante'
+
+app.config.update(
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=False
+)
 
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
             host='127.0.0.1',
-            database='BDPROJECT',
+            port=3306,
+            database='prod1',
             user='root',
             password='Lusc@031020'
         )
         if connection.is_connected():
+            print("Conexão ao MySQL estabelecida com sucesso!")
             return connection
     except Error as e:
         print(f"Erro ao conectar ao MySQL: {e}")
         return None
-
 
 def carregar_usuario():
     connection = get_db_connection()
@@ -31,9 +36,9 @@ def carregar_usuario():
         usuarios = cursor.fetchall()
         cursor.close()
         connection.close()
+        print(f"Usuários carregados: {usuarios}")  
         return usuarios
     return []
-
 
 def carregar_dados():
     connection = get_db_connection()
@@ -48,29 +53,52 @@ def carregar_dados():
         return dados
     return []
 
-
 def salvar_dados(dado):
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
         query = """INSERT INTO dados (nome, data, horaE, veic, cor, placa, visit, tipo_visitante, rg, empresa, horaS, setor, obs)
                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        values = (dado['nome'], dado['data'], dado['horaE'], dado['veic'], dado['cor'], dado['placa'], dado['visit'],
-                  dado['tipo_visitante'], dado['rg'], dado['empresa'], dado['horaS'], dado['setor'], dado['obs'])
-        cursor.execute(query, values)
-        connection.commit()
-        cursor.close()
-        connection.close()
+        values = (
+            dado['nome'],
+            dado['data'],           
+            dado['horaE'],          
+            dado['veic'],
+            dado['cor'],
+            dado['placa'],
+            dado['visit'],
+            dado['tipo_visitante'],
+            dado['rg'],
+            dado['empresa'],
+            dado['horaS'],          
+            dado['setor'],
+            dado['obs']
+        )
+        
+        print("Consulta SQL:", query)
+        print("Valores:", values)
+        
+        try:
+            cursor.execute(query, values)
+            connection.commit()
+        except Error as e:
+            print(f"Erro ao executar a consulta: {e}")
+        finally:
+            cursor.close()
+            connection.close()
 
 
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'nome' not in session:
+            print("Usuário não está na sessão, redirecionando para login.")
             flash('Você precisa estar logado para acessar esta página.', 'error')
             return redirect(url_for('login', next=request.url))
+        print("Usuário está na sessão.")
         return f(*args, **kwargs)
     return decorated_function
+
 
 @app.route('/')
 def inicio():
@@ -90,8 +118,10 @@ def login():
         usuarios = carregar_usuario()
         
         for usuario in usuarios:
-            if usuario['nome'] == nome and usuario['senha'] == senha:
+            print(f"Verificando usuário: {usuario}")  
+            if usuario['nome'].strip().lower() == nome.strip().lower() and usuario['senha'] == senha:
                 session['nome'] = nome
+                #print(f"sessao criada {nome}")
                 return redirect('/home')
             
         else:
@@ -103,14 +133,19 @@ def login():
 @login_required
 def home():
     if 'nome' not in session:
-        return redirect('/')  
+        return redirect('/')
     
     nome = session['nome']
-    dados = carregar_dados()  
+    dados = carregar_dados()
     
     if request.method == 'POST':
-        data = request.form.get('data')
-        data = datetime.strptime(data, '%Y-%m-%d').strftime('%d-%m-%Y')
+        data = request.form.get('data')  
+        try:
+            data_formatada = datetime.strptime(data, '%Y-%m-%d').strftime('%Y-%m-%d')
+        except ValueError:
+            flash('Formato de data inválido.')
+            return redirect('/home')
+
         horaE = request.form.get('horaE')
         veic = request.form.get('veic')
         cor = request.form.get('cor')
@@ -130,7 +165,7 @@ def home():
         newD = {
             'cod': codigo,
             'nome': nome,
-            'data': data,
+            'data': data_formatada,  
             'horaE': horaE,
             'veic': veic,
             'cor': cor,
@@ -145,9 +180,10 @@ def home():
         }
 
         salvar_dados(newD)
-        dados = carregar_dados()  # Recarregar os dados para atualizar a tabela
+        dados = carregar_dados()  
 
     return render_template('home.html', dados=dados)
+
 
 
 @app.route('/relatorio')
@@ -185,7 +221,6 @@ def atualizar_dados():
         return jsonify({'message': 'Erro: Não foi possível atualizar os dados.'}), 400
 
     return jsonify({'message': 'Método não permitido.'}), 405
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
