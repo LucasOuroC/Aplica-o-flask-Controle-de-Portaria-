@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/static/img/Mercantefundo.png');
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.alert{
+    font-size: 5px;
+    color: red;
+    text-align: center;
+}
+
+.container {
+    width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(14, 13, 13, 0.671); 
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(14, 13, 13, 0.671);
+    background-color: rgba(14, 13, 13, 0.671);
+}
+
+label {
+    margin-bottom: 5px;
+    color: #ffffff; 
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#error-msg {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
