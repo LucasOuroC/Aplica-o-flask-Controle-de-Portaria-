@@ -2,7 +2,7 @@ Esse README contem algumas pre etapas necessarias para que o programa entre em f
 
 Coisas que voce irá precisar:
 
-- Flask==2.0.3
+- Flask==2.2.5
 - mysql-connector-python==8.0.28
 - python-dotenv==0.19.2
   
