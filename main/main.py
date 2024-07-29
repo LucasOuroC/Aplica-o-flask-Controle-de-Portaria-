@@ -25,7 +25,7 @@ app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 
 app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
-    SESSION_COOKIE_SECURE=False
+    SESSION_COOKIE_SECURE=False #Alternar para true em Prod
 )
 
 def get_db_connection():
