@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, session, jsonify,url_for
+from flask import Flask, render_template, request, redirect, flash, session, jsonify,url_for, make_response
 from functools import wraps
 from datetime import datetime
 import mysql.connector
@@ -10,6 +10,18 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+
+@app.before_request
+def ensure_session_access():
+    session.modified = True
+
+@app.after_request
+def add_header(response):
+    response.cache_control.no_store = True
+    response.cache_control.private = True
+    return response
+
+app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 
 app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
