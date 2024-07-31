@@ -8,7 +8,7 @@ Coisas que voce irá precisar:
 - python-dotenv==0.19.2
   
 Entre outras encontradas no "requirements.txt"
-Execute pip install -r requirements.txt para realizar a instalação das dependencias necessarias.
+Execute "pip install -r requirements.txt" para realizar a instalação das dependencias necessarias.
 
 En Version--------
 This README have some important steps to make this program work correctly.
