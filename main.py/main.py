@@ -211,11 +211,22 @@ def atualizar_dados():
             query = """UPDATE dados SET nome = %s, data = %s, horaE = %s, veic = %s, cor = %s, placa = %s, visit = %s,
                        tipo_visitante = %s, rg = %s, empresa = %s, horaS = %s, setor = %s, obs = %s
                        WHERE cod = %s"""
-            values = (dados_atualizados['nome'], dados_atualizados['data'], dados_atualizados['horaE'],
-                      dados_atualizados['veic'], dados_atualizados['cor'], dados_atualizados['placa'],
-                      dados_atualizados['visit'], dados_atualizados['tipo_visitante'], dados_atualizados['rg'],
-                      dados_atualizados['empresa'], dados_atualizados['horaS'], dados_atualizados['setor'],
-                      dados_atualizados['obs'], dados_atualizados['cod'])
+            values = (
+                dados_atualizados.get('nome'),
+                dados_atualizados.get('data'),
+                dados_atualizados.get('horaE'),
+                dados_atualizados.get('veic'),
+                dados_atualizados.get('cor', None),  # Aqui usamos get com um valor padrão None
+                dados_atualizados.get('placa'),
+                dados_atualizados.get('visit'),
+                dados_atualizados.get('tipo_visitante'),
+                dados_atualizados.get('rg'),
+                dados_atualizados.get('empresa'),
+                dados_atualizados.get('horaS'),
+                dados_atualizados.get('setor'),
+                dados_atualizados.get('obs'),
+                dados_atualizados.get('cod')
+            )
             cursor.execute(query, values)
             connection.commit()
             cursor.close()
